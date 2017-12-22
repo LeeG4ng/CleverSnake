@@ -7,9 +7,11 @@
 //
 
 #include <stdio.h>
+#include "SnakeModel.h"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    printf("Hello, World!\n");
+    Snake * snake = initSnake();
+    printf("%d",  snake->head->x);
     return 0;
 }
+
