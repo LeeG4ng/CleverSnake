@@ -14,12 +14,12 @@
 #pragma mark - 类型定义
 /*坐标*/
 struct point {
-    short x;
-    short y;
+    int x;
+    int y;
 };
 typedef struct point Point;
 
-Point PointMake(short x, short y);
+Point PointMake(int x, int y);
 
 /*节点*/
 struct node {
@@ -41,7 +41,7 @@ typedef enum {
 struct Snake {
     SnakeDirection direction;
     Node * head;
-    short length;
+    int length;
 };
 typedef struct Snake Snake;
 
@@ -54,12 +54,12 @@ Snake * initSnake(void);
 /*操作：向蛇模型中插入一个节点
  *参数：蛇的指针，插入的位置，节点的坐标
  *结果：*/
-void insertNodeAtIndex(Snake * psnake, short index, Point position);
+void insertNodeAtIndex(Snake * psnake, int index, Point position);
 
 /*操作：删除蛇模型中的指定节点
  *参数：蛇的指针，节点的位置
  *结果：*/
-void deleteNodeAtIndex(Snake * psnake, short index);
+void deleteNodeAtIndex(Snake * psnake, int index);
 
 /*操作：吃到食物移动
  *参数：蛇的指针

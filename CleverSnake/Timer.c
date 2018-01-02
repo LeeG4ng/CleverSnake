@@ -7,21 +7,26 @@
 //
 
 #include "Timer.h"
+#include "ThreadManager.h"
 #include <sys/time.h>
 
-int timer(time_t interval, timer_block timing, timer_block completion) {
-    int count = 0;
+pthread_t timerThread;
+
+void set_timer(time_t interval_ms, timer_block do_block) {
     while (1) {
         struct timeval start, end;
         gettimeofday(&start, NULL);
         time_t now_intetval;
-        timing(count);
+        do_block();
+        pthread_testcancel();
         do {
             gettimeofday(&end, NULL);
             now_intetval = (end.tv_sec - start.tv_sec)*1000 + (end.tv_usec - start.tv_usec)/1000;
-        } while (now_intetval < interval);
-        count++;
-        completion(count);
+        } while (now_intetval < interval_ms);
     }
-    return 0;
+}
+
+void destroy_timer(void) {
+    pthread_cancel(timerThread);
+    pthread_join(timerThread, NULL);
 }

@@ -24,16 +24,16 @@ static Node * nodeMake(Point position) {
 /*操作：从头节点遍历得到该序号的节点
  *参数：蛇的指针，节点序号
  *结果：返回该节点*/
-static Node * getNodeAtIndex(Snake * psnake, short index) {
+static Node * getNodeAtIndex(Snake * psnake, int index) {
     Node * tempNode = psnake->head;
-    for(short i = 0; i < index; i++) {
+    for(int i = 0; i < index; i++) {
         tempNode = tempNode->next;
     }
     return tempNode;
 }
 
 #pragma mark - 接口实现
-Point PointMake(short x, short y) {
+Point PointMake(int x, int y) {
     Point point = {x, y};
     return point;
 }
@@ -45,7 +45,7 @@ Snake * initSnake(void) {
     return psnake;
 }
 
-void insertNodeAtIndex(Snake * psnake, short index, Point position) {
+void insertNodeAtIndex(Snake * psnake, int index, Point position) {
     Node * tempNode = nodeMake(position);//待插入的节点
     Node * nextNode = getNodeAtIndex(psnake, index);
     Node * lastNode = nextNode->last;
@@ -59,7 +59,7 @@ void insertNodeAtIndex(Snake * psnake, short index, Point position) {
     }
 }
 
-void deleteNodeAtIndex(Snake * psnake, short index) {
+void deleteNodeAtIndex(Snake * psnake, int index) {
     Node * targetNode = getNodeAtIndex(psnake, index);//待删除的节点
     Node * nextNode = targetNode->next;
     Node * lastNode = targetNode->last;

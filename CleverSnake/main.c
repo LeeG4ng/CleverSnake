@@ -9,6 +9,7 @@
 #include "SnakeModel.h"
 #include <ncurses.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "Timer.h"
 #include "ThreadManager.h"
 
@@ -18,6 +19,44 @@ int main(int argc, const char * argv[]) {
     raw();
     noecho();
     keypad(stdscr, true);
+    pthread_t th = *(pthread_t *)malloc(sizeof(pthread_t));
+//    dispatch(th, ^{
+//        int i = 0;
+//        while (1) {
+//            mvaddstr(i++, i++, "c");
+//            refresh();
+//        }
+//    });
+//    getch();
+//    pthread_cancel(th);
+//    pthread_join(th, NULL);
+    dispatch(th, ^{
+        set_timer(500, ^{
+            clear();
+            moveWithoutFood(snake);
+            Node *tempNode = snake->head;
+            for(int i = 0; i < snake->length; i++) {
+                tempNode = tempNode->next;
+                mvaddstr(tempNode->position.y, tempNode->position.x, "*");
+            }
+            
+            refresh();
+        });
+    });
+//    set_timer(500, ^{
+//        clear();
+//        moveWithoutFood(snake);
+//        Node *tempNode = snake->head;
+//        for(int i = 0; i < snake->length; i++) {
+//            tempNode = tempNode->next;
+//            mvaddstr(tempNode->position.y, tempNode->position.x, "*");
+//        }
+//
+//        refresh();
+//    });
+    getch();
+    pthread_cancel(th);
+    /*
     pthread_t myThread = NULL;
     dispatch(myThread, ^{
         while (1) {
@@ -36,21 +75,24 @@ int main(int argc, const char * argv[]) {
                     snake->direction = SnakeDirectionRight;
                     break;
             }
+            destroy_timer(timer);
+            timer = NULL;
+            set_timer(timer, 500, ^{
+                clear();
+                moveWithoutFood(snake);
+                Node *tempNode = snake->head;
+                for(int i = 0; i < snake->length; i++) {
+                    tempNode = tempNode->next;
+                    mvaddstr(tempNode->position.y, tempNode->position.x, "*");
+                }
+                refresh();
+            });
         }
-    });
-    timer(500, ^(int count) {}, ^(int count) {
-        clear();
-        moveWithoutFood(snake);
-        Node *tempNode = snake->head;
-        for(int i = 0; i < snake->length; i++) {
-            tempNode = tempNode->next;
-            mvaddstr(tempNode->position.y, tempNode->position.x, "*");
-        }
-        refresh();
-    });
-    while (1) {
-        ;
-    }
+    });*/
+    pthread_join(th, NULL);
+    getch();
+    endwin();
+    return 0;
 }
 
 

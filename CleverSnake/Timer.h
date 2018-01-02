@@ -11,8 +11,9 @@
 
 #include <stdio.h>
 
-typedef void (^timer_block)(int count);
+typedef void (^timer_block)(void);
 
-int timer(time_t interval_ms, _Nullable timer_block timing, _Nullable timer_block completion);
+void set_timer(time_t interval_ms, timer_block do_block);
+void destroy_timer(void);
 
 #endif /* Timer_h */
