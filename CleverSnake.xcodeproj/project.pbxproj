@@ -12,6 +12,8 @@
 		E238F8921FF4DAC700692F15 /* ThreadManager.c in Sources */ = {isa = PBXBuildFile; fileRef = E238F8911FF4DAC700692F15 /* ThreadManager.c */; };
 		E2D679121FE7EF3500B40D76 /* SnakeModel.c in Sources */ = {isa = PBXBuildFile; fileRef = E2D679111FE7EF3500B40D76 /* SnakeModel.c */; };
 		E2E244951FE54CC100C213FB /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = E2E244941FE54CC100C213FB /* main.c */; };
+		E2E9C1F11FFBC667006E194F /* Menu.c in Sources */ = {isa = PBXBuildFile; fileRef = E2E9C1F01FFBC667006E194F /* Menu.c */; };
+		E2E9C1F41FFCE8DF006E194F /* Ranking.c in Sources */ = {isa = PBXBuildFile; fileRef = E2E9C1F31FFCE8DF006E194F /* Ranking.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +39,10 @@
 		E2D679141FE80A6600B40D76 /* libncurses.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.tbd; path = usr/lib/libncurses.tbd; sourceTree = SDKROOT; };
 		E2E244911FE54CC100C213FB /* CleverSnake */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CleverSnake; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E244941FE54CC100C213FB /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		E2E9C1EF1FFBC667006E194F /* Menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
+		E2E9C1F01FFBC667006E194F /* Menu.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Menu.c; sourceTree = "<group>"; };
+		E2E9C1F21FFCE8DF006E194F /* Ranking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ranking.h; sourceTree = "<group>"; };
+		E2E9C1F31FFCE8DF006E194F /* Ranking.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Ranking.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,14 +87,26 @@
 			isa = PBXGroup;
 			children = (
 				E2E244941FE54CC100C213FB /* main.c */,
+				E2E9C1EF1FFBC667006E194F /* Menu.h */,
+				E2E9C1F01FFBC667006E194F /* Menu.c */,
+				E2E9C1F21FFCE8DF006E194F /* Ranking.h */,
+				E2E9C1F31FFCE8DF006E194F /* Ranking.c */,
 				E2D679101FE7EF3500B40D76 /* SnakeModel.h */,
 				E2D679111FE7EF3500B40D76 /* SnakeModel.c */,
+				E2E9C1F51FFCE8E4006E194F /* Support Files */,
+			);
+			path = CleverSnake;
+			sourceTree = "<group>";
+		};
+		E2E9C1F51FFCE8E4006E194F /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
 				E238F88D1FF48F5200692F15 /* Timer.h */,
 				E238F88E1FF48F5200692F15 /* Timer.c */,
 				E238F8901FF4DAC700692F15 /* ThreadManager.h */,
 				E238F8911FF4DAC700692F15 /* ThreadManager.c */,
 			);
-			path = CleverSnake;
+			path = "Support Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,7 +166,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2E9C1F11FFBC667006E194F /* Menu.c in Sources */,
 				E238F88F1FF48F5200692F15 /* Timer.c in Sources */,
+				E2E9C1F41FFCE8DF006E194F /* Ranking.c in Sources */,
 				E2D679121FE7EF3500B40D76 /* SnakeModel.c in Sources */,
 				E2E244951FE54CC100C213FB /* main.c in Sources */,
 				E238F8921FF4DAC700692F15 /* ThreadManager.c in Sources */,

@@ -8,12 +8,12 @@
 
 #include "ThreadManager.h"
 
-static void * thread_func(void * tas) {
+static void * thread_func(void * task) {
     pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
     pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
     pthread_testcancel();
-    task_block b = (task_block)tas;
-    b();
+    task_block block = (task_block)task;
+    block();
     return (void *)0;
 }
 

@@ -71,4 +71,6 @@ void moveWithFood(Snake * psnake);
  *结果：蛇身整体移动*/
 void moveWithoutFood(Snake * psnake);
 
+
+
 #endif /* SnakeModel_h */

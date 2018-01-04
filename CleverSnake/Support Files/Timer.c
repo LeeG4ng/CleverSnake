@@ -6,10 +6,12 @@
 //  Copyright © 2017年 UniqueStudio. All rights reserved.
 //
 
+#include <stdbool.h>
 #include "Timer.h"
 #include "ThreadManager.h"
 #include <sys/time.h>
 
+extern bool willCancleTimer;
 pthread_t timerThread;
 
 void set_timer(time_t interval_ms, timer_block do_block) {
@@ -20,6 +22,10 @@ void set_timer(time_t interval_ms, timer_block do_block) {
         do_block();
         pthread_testcancel();
         do {
+            if(willCancleTimer) {
+                willCancleTimer = false;
+                return;
+            }
             gettimeofday(&end, NULL);
             now_intetval = (end.tv_sec - start.tv_sec)*1000 + (end.tv_usec - start.tv_usec)/1000;
         } while (now_intetval < interval_ms);
