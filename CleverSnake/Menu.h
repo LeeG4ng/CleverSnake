@@ -21,10 +21,10 @@ typedef enum {
 MenuItem drawMenu(void);
 
 typedef enum {
-    LevelLow,
-    LevelMedium,
-    LevelHigh,
-    LevelBack
+    Low,
+    Medium,
+    High,
+    Back
 } LevelItem;
 
 LevelItem drawLevelSelect(void);

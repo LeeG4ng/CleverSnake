@@ -43,7 +43,7 @@ MenuItem drawMenu(void) {
 }
 
 LevelItem drawLevelSelect(void) {
-    level = LevelLow;
+    level = Low;
     selectLevelLow();
     while(1) {
         int ch = getch();
@@ -140,16 +140,16 @@ void selectExit() {
 #pragma mark - Reprint Level
 void changeLevel(void) {
     switch (level) {
-        case LevelLow:
+        case Low:
             selectLevelLow();
             break;
-        case LevelMedium:
+        case Medium:
             selectLevelMedium();
             break;
-        case LevelHigh:
+        case High:
             selectLevelHigh();
             break;
-        case LevelBack:
+        case Back:
             selectBack();
             break;
     }

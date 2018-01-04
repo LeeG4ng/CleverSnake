@@ -14,6 +14,7 @@
 		E2E244951FE54CC100C213FB /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = E2E244941FE54CC100C213FB /* main.c */; };
 		E2E9C1F11FFBC667006E194F /* Menu.c in Sources */ = {isa = PBXBuildFile; fileRef = E2E9C1F01FFBC667006E194F /* Menu.c */; };
 		E2E9C1F41FFCE8DF006E194F /* Ranking.c in Sources */ = {isa = PBXBuildFile; fileRef = E2E9C1F31FFCE8DF006E194F /* Ranking.c */; };
+		E2E9C1F81FFDD275006E194F /* GameLogic.c in Sources */ = {isa = PBXBuildFile; fileRef = E2E9C1F71FFDD275006E194F /* GameLogic.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +44,8 @@
 		E2E9C1F01FFBC667006E194F /* Menu.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Menu.c; sourceTree = "<group>"; };
 		E2E9C1F21FFCE8DF006E194F /* Ranking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ranking.h; sourceTree = "<group>"; };
 		E2E9C1F31FFCE8DF006E194F /* Ranking.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Ranking.c; sourceTree = "<group>"; };
+		E2E9C1F61FFDD275006E194F /* GameLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameLogic.h; sourceTree = "<group>"; };
+		E2E9C1F71FFDD275006E194F /* GameLogic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = GameLogic.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +92,8 @@
 				E2E244941FE54CC100C213FB /* main.c */,
 				E2E9C1EF1FFBC667006E194F /* Menu.h */,
 				E2E9C1F01FFBC667006E194F /* Menu.c */,
+				E2E9C1F61FFDD275006E194F /* GameLogic.h */,
+				E2E9C1F71FFDD275006E194F /* GameLogic.c */,
 				E2E9C1F21FFCE8DF006E194F /* Ranking.h */,
 				E2E9C1F31FFCE8DF006E194F /* Ranking.c */,
 				E2D679101FE7EF3500B40D76 /* SnakeModel.h */,
@@ -171,6 +176,7 @@
 				E2E9C1F41FFCE8DF006E194F /* Ranking.c in Sources */,
 				E2D679121FE7EF3500B40D76 /* SnakeModel.c in Sources */,
 				E2E244951FE54CC100C213FB /* main.c in Sources */,
+				E2E9C1F81FFDD275006E194F /* GameLogic.c in Sources */,
 				E238F8921FF4DAC700692F15 /* ThreadManager.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
