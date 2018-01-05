@@ -11,45 +11,22 @@
 #include "ThreadManager.h"
 #include <sys/time.h>
 
-bool willCancleTimer;
-pthread_t timerThread;
 
-void set_timer(time_t interval_ms, timer_block do_block) {
-//    dispatch(timerThread, ^{
-//        while (1) {
-//            struct timeval start, end;
-//            gettimeofday(&start, NULL);
-//            time_t now_intetval;
-//            do_block();
-//            pthread_testcancel();
-//            do {
-//                if(willCancleTimer) {
-//                    willCancleTimer = false;
-//                    return;
-//                }
-//                gettimeofday(&end, NULL);
-//                now_intetval = (end.tv_sec - start.tv_sec)*1000 + (end.tv_usec - start.tv_usec)/1000;
-//            } while (now_intetval < interval_ms);
-//        }
-//    });
+void set_timer(time_t interval_ms, bool * stop, timer_block do_block) {
     while (1) {
         struct timeval start, end;
         gettimeofday(&start, NULL);
         time_t now_intetval;
+        if(stop) {
+            if(*stop)
+                return;
+        }
         do_block();
         pthread_testcancel();
         do {
-            if(willCancleTimer) {
-                willCancleTimer = false;
-                return;
-            }
             gettimeofday(&end, NULL);
             now_intetval = (end.tv_sec - start.tv_sec)*1000 + (end.tv_usec - start.tv_usec)/1000;
         } while (now_intetval < interval_ms);
     }
 }
 
-void destroy_timer(void) {
-    willCancleTimer = true;
-    pthread_join(timerThread, NULL);
-}

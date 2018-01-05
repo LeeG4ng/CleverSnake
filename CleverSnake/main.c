@@ -57,18 +57,22 @@ void presentMenu() {
 
 void presentLevel() {
     LevelItem level = drawLevelSelect();
+    Status * end = NULL;
     switch (level) {
         case Low:
-            startGameWithLevel(LevelLow);
+            end = startGameWithLevel(LevelLow);
             break;
         case Medium:
-            startGameWithLevel(LevelMedium);
+            end = startGameWithLevel(LevelMedium);
             break;
         case High:
-            startGameWithLevel(LevelHigh);
+            end = startGameWithLevel(LevelHigh);
             break;
         case Back:
             break;
+    }
+    if(end) {
+        
     }
     presentMenu();
 }

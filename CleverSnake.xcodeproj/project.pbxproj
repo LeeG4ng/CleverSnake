@@ -89,6 +89,8 @@
 		E2E244931FE54CC100C213FB /* CleverSnake */ = {
 			isa = PBXGroup;
 			children = (
+				E2D679101FE7EF3500B40D76 /* SnakeModel.h */,
+				E2D679111FE7EF3500B40D76 /* SnakeModel.c */,
 				E2E244941FE54CC100C213FB /* main.c */,
 				E2E9C1EF1FFBC667006E194F /* Menu.h */,
 				E2E9C1F01FFBC667006E194F /* Menu.c */,
@@ -96,8 +98,6 @@
 				E2E9C1F71FFDD275006E194F /* GameLogic.c */,
 				E2E9C1F21FFCE8DF006E194F /* Ranking.h */,
 				E2E9C1F31FFCE8DF006E194F /* Ranking.c */,
-				E2D679101FE7EF3500B40D76 /* SnakeModel.h */,
-				E2D679111FE7EF3500B40D76 /* SnakeModel.c */,
 				E2E9C1F51FFCE8E4006E194F /* Support Files */,
 			);
 			path = CleverSnake;

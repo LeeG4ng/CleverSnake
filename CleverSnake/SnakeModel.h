@@ -71,6 +71,9 @@ void moveWithFood(Snake * psnake);
  *结果：蛇身整体移动*/
 void moveWithoutFood(Snake * psnake);
 
-
+/*操作：获得蛇的位置数组
+ *参数：蛇的指针
+ *返回：位置数组首地址*/
+Point * getPositions(Snake * psnake);
 
 #endif /* SnakeModel_h */

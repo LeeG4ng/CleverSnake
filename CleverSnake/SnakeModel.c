@@ -41,6 +41,7 @@ Point PointMake(int x, int y) {
 Snake * initSnake(void) {
     Snake * psnake = (Snake *)malloc(sizeof(Snake));
     psnake->head = nodeMake(PointMake(10, 10));
+    psnake->direction = SnakeDirectionRight;
     psnake->length = 1;
     return psnake;
 }
@@ -90,4 +91,14 @@ void moveWithFood(Snake * psnake) {
 void moveWithoutFood(Snake * psnake) {
     moveWithFood(psnake);
     deleteNodeAtIndex(psnake, psnake->length-1);
+}
+
+Point * getPositions(Snake * psnake) {
+    Node * tempNode = psnake->head;
+    Point * arr = (Point *)malloc(sizeof(Point) * psnake->length);
+    for(int i = 0; i < psnake->length; i++) {
+        arr[i] = tempNode->position;
+        tempNode = tempNode->next;
+    }
+    return arr;
 }

@@ -13,7 +13,7 @@
 
 typedef void (^timer_block)(void);
 
-void set_timer(time_t interval_ms, timer_block do_block);
+void set_timer(time_t interval_ms, bool * stop, timer_block do_block);
 void destroy_timer(void);
 
 #endif /* Timer_h */
