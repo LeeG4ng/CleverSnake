@@ -49,6 +49,7 @@ static Player * getRanking(void) {
         fscanf(file, "%d", &(arr[index].length));
     }
     sortRanking(arr);
+    fclose(file);
     return arr;
 }
 
@@ -56,6 +57,7 @@ static Player * getRanking(void) {
 void recordPlayer(Player player) {
     FILE * file = fopen(path, "a+");
     fprintf(file, "%s %d\n", player.name, player.length);
+    fclose(file);
 }
 
 void drawRanking(void) {

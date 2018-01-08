@@ -9,12 +9,12 @@
 #include <stdbool.h>
 #include <ncurses.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include "GameLogic.h"
 #include "Timer.h"
-#include "ThreadManager.h"
 
 #pragma mark - 私有函数
-#define TEXT_HEIGHT 10
+#define TEXT_HEIGHT 5
 
 /*操作：测试下一步的地图元素
  *参数：游戏状态
@@ -79,13 +79,14 @@ static time_t getTimerInterval(GameLevel level) {
 
 /*操作：重置计时器，由多线程调用
  *参数：游戏状态*/
-static void * resetDrawingTimer(void* status) {
+static void * resetCoreTimer(void* status) {
     pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
     Status * initial = (Status *)status;
     Snake * snake = initial->snake;
     __block bool stop = false;
     set_timer(getTimerInterval(initial->level), &stop, ^{
         clear();
+        snake->direction = snake->tempDirection;
         switch (testElement(initial)) {
             case Blank:
                 moveWithoutFood(snake);
@@ -94,10 +95,10 @@ static void * resetDrawingTimer(void* status) {
                 moveWithFood(snake);
                 break;
             case Weed:
-                
+                moveWithWeed(snake);
                 break;
             case Bomb:
-                
+                moveWithBomb(snake);
                 break;
             case Wall:
                 initial->alive = false;
@@ -108,24 +109,38 @@ static void * resetDrawingTimer(void* status) {
                 stop = true;
                 break;
         }
+        if(snake->length == 0) {
+            initial->alive = false;
+            stop = true;
+        }
+        if(snake->length > 10) {
+            initial->level = LevelHigh;
+        } else if (snake->length > 5 && initial->level == LevelLow) {
+            initial->level = LevelMedium;
+        }
+        
+        //绘制
         Node *tempNode = snake->head;
         for(int i = 0; i < snake->length; i++) {
             tempNode = tempNode->next;
             mvaddstr(tempNode->position.y, tempNode->position.x, "#");
         }
+        static char food[5] = {0xF0, 0x9F, 0x8D, 0xA9, '\0'};
+        static char weed[5] = {0xF0, 0x9F, 0x8c, 0xB1, '\0'};
+        static char bomb[5] = {0xF0, 0x9F, 0x92, 0xA3, '\0'};
         for(int row = 0; row < LINES - TEXT_HEIGHT; row++) {
             for(int col = 0; col < COLS; col++) {
                 switch (initial->map[row][col]) {
                     case Blank:
                         break;
                     case Food:
-                        mvaddstr(row, col, "x");
+                        mvaddstr(row, col, food);
                         break;
                     case Weed:
-                        mvaddstr(row, col, " ");
+                        mvaddstr(row, col, weed);
                         break;
                     case Bomb:
-                        mvaddstr(row, col, " ");
+                        mvaddstr(row, col, bomb);
                         break;
                     case Wall:
                         mvaddstr(row, col, "@");
@@ -135,21 +150,31 @@ static void * resetDrawingTimer(void* status) {
                 }
             }
         }
+        char level[20];
+        sprintf(level, "Level:%d", initial->level);
+        mvaddstr(LINES-4, 20, level);
+        for(int i = 0; i < COLS; i++) {
+            mvaddstr(LINES-TEXT_HEIGHT, i, "-");
+        }
         refresh();
     });
-    mvaddstr(LINES-5, 30, "You died, press Q to save ranking");
+    mvaddstr(LINES-4, 30, "You died, press Q to save ranking");
     refresh();
     return (void *)0;
 }
 
 static Point randPoint(Status * current) {
     Point rpoint;
-    srand((unsigned int)time(NULL));
+    struct timeval timenow;
+    gettimeofday(&timenow, NULL);
+//    srand((unsigned int)time(NULL));
+    srand(timenow.tv_usec);
     int x = rand()%(COLS-1);
     int y = rand()%(LINES-TEXT_HEIGHT-1);
     rpoint = PointMake(x, y);
     while (!testMap(current, rpoint)){
-        srand((unsigned int)time(NULL));
+//        srand((unsigned int)time(NULL));
+        srand(timenow.tv_usec);
         int x = rand()%(COLS-1);
         int y = rand()%(LINES-TEXT_HEIGHT-1);
         rpoint = PointMake(x, y);
@@ -159,7 +184,7 @@ static Point randPoint(Status * current) {
 
 static void * makeFood(void * status) {
     Status * current = (Status *)status;
-    set_timer(2000, NULL, ^{
+    set_timer(8000, NULL, ^{
         Point food = randPoint(current);
         current->map[food.y][food.x] = Food;
     });
@@ -168,13 +193,31 @@ static void * makeFood(void * status) {
 
 static void * makeWeed(void * status) {
     Status * current = (Status *)status;
-    
+    __block int count = 0;
+    set_timer(12000, NULL, ^{
+        if(count++ == 5) {
+            count = 0;
+            for(int row = 0; row < LINES-TEXT_HEIGHT; row++) {
+                for(int col = 0; col < COLS; col++) {
+                    if(current->map[row][col] == Weed) {
+                        current->map[row][col] = Blank;
+                    }
+                }
+            }
+        } else {
+            Point weed = randPoint(current);
+            current->map[weed.y][weed.x] = Weed;
+        }
+    });
     return (void *)0;
 }
 
 static void * makeBomb(void * status) {
     Status * current = (Status *)status;
-    
+    set_timer(15000, NULL, ^{
+        Point bomb = randPoint(current);
+        current->map[bomb.y][bomb.x] = Bomb;
+    });
     return (void *)0;
 }
 
@@ -211,6 +254,9 @@ static void * makeMapElement(void * status) {
             pthread_cancel(bomb);
             food = weed = bomb = NULL;
             makeWall(status);
+            pthread_cancel(draw_thread);
+            pthread_join(draw_thread, NULL);
+            pthread_create(&draw_thread, NULL, resetCoreTimer, status);
             switch (origin) {
                 case LevelLow:
                     pthread_create(&food, NULL, makeFood, status);
@@ -236,7 +282,7 @@ static Status * startGame(Status * initial) {
     initial->alive = true;
     Snake * snake = initial->snake;
     draw_thread = NULL;
-    pthread_create(&draw_thread, NULL, resetDrawingTimer, (void *)initial);
+    pthread_create(&draw_thread, NULL, resetCoreTimer, (void *)initial);
     map_thread = NULL;
     pthread_create(&map_thread, NULL, makeMapElement, (void *)initial);
     while (1) {
@@ -247,16 +293,16 @@ static Status * startGame(Status * initial) {
             return initial;
         }
         if(ch == KEY_UP && snake->direction != SnakeDirectionDown) {
-            snake->direction = SnakeDirectionUp;
+            snake->tempDirection = SnakeDirectionUp;
         }
         if(ch == KEY_LEFT && snake->direction != SnakeDirectionRight) {
-            snake->direction = SnakeDirectionLeft;
+            snake->tempDirection = SnakeDirectionLeft;
         }
         if(ch == KEY_DOWN && snake->direction != SnakeDirectionUp) {
-            snake->direction = SnakeDirectionDown;
+            snake->tempDirection = SnakeDirectionDown;
         }
         if(ch == KEY_RIGHT && snake->direction != SnakeDirectionLeft) {
-            snake->direction = SnakeDirectionRight;
+            snake->tempDirection = SnakeDirectionRight;
         }
         
 //        pthread_cancel(draw_thread);

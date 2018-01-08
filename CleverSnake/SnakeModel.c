@@ -93,6 +93,19 @@ void moveWithoutFood(Snake * psnake) {
     deleteNodeAtIndex(psnake, psnake->length-1);
 }
 
+void moveWithWeed(Snake * psnake) {
+    moveWithoutFood(psnake);
+    deleteNodeAtIndex(psnake, psnake->length-1);
+}
+
+void moveWithBomb(Snake * psnake) {
+    moveWithoutFood(psnake);
+    int count = (psnake->length+1)/2;
+    for(int i = 0; i < count; i++) {
+        deleteNodeAtIndex(psnake, psnake->length-1);
+    }
+}
+
 Point * getPositions(Snake * psnake) {
     Node * tempNode = psnake->head;
     Point * arr = (Point *)malloc(sizeof(Point) * psnake->length);

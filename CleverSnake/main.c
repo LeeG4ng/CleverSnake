@@ -10,8 +10,9 @@
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
+#include <pthread.h>
 #include "Timer.h"
-#include "ThreadManager.h"
 #include "Menu.h"
 #include "GameLogic.h"
 #include "Ranking.h"
@@ -22,6 +23,7 @@ void presentMenu(void);
 void presentLevel(void);
 
 int main(int argc, const char * argv[]) {
+    setlocale(LC_ALL, "en_US.utf-8");
     initscr();
     raw();
     noecho();
@@ -72,7 +74,29 @@ void presentLevel() {
             break;
     }
     if(end) {
-        
+        clear();
+        char score[20];
+        sprintf(score, "Your length:%d", end->snake->length);
+        mvaddstr(5, 10, score);
+        mvaddstr(6, 10, "Enter your name:");
+        Player new;
+        new.length = end->snake->length;
+        refresh();
+        echo();
+        keypad(stdscr, false);
+        int ch;
+        int i = -1;
+        while(++i < 9) {
+            ch = getch();
+            if(ch == 10)
+                break;
+            new.name[i] = ch;
+        }
+        new.name[i+1] = '\0';
+        noecho();
+        keypad(stdscr, true);
+//        sprintf(new.name, "ll");
+        recordPlayer(new);
     }
     presentMenu();
 }

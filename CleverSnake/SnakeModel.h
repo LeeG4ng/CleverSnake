@@ -40,6 +40,7 @@ typedef enum {
 /*蛇模型*/
 struct Snake {
     SnakeDirection direction;
+    SnakeDirection tempDirection;
     Node * head;
     int length;
 };
@@ -70,6 +71,10 @@ void moveWithFood(Snake * psnake);
  *参数：蛇的指针
  *结果：蛇身整体移动*/
 void moveWithoutFood(Snake * psnake);
+
+void moveWithWeed(Snake * psnake);
+
+void moveWithBomb(Snake * psnake);
 
 /*操作：获得蛇的位置数组
  *参数：蛇的指针

@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E238F88C1FF4767800692F15 /* libncurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E2D679141FE80A6600B40D76 /* libncurses.tbd */; };
 		E238F88F1FF48F5200692F15 /* Timer.c in Sources */ = {isa = PBXBuildFile; fileRef = E238F88E1FF48F5200692F15 /* Timer.c */; };
-		E238F8921FF4DAC700692F15 /* ThreadManager.c in Sources */ = {isa = PBXBuildFile; fileRef = E238F8911FF4DAC700692F15 /* ThreadManager.c */; };
+		E24A777920030F4E004DB8DB /* libncurses.5.4.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E24A777820030F4E004DB8DB /* libncurses.5.4.tbd */; };
 		E2D679121FE7EF3500B40D76 /* SnakeModel.c in Sources */ = {isa = PBXBuildFile; fileRef = E2D679111FE7EF3500B40D76 /* SnakeModel.c */; };
 		E2E244951FE54CC100C213FB /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = E2E244941FE54CC100C213FB /* main.c */; };
 		E2E9C1F11FFBC667006E194F /* Menu.c in Sources */ = {isa = PBXBuildFile; fileRef = E2E9C1F01FFBC667006E194F /* Menu.c */; };
@@ -32,9 +31,8 @@
 /* Begin PBXFileReference section */
 		E238F88D1FF48F5200692F15 /* Timer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		E238F88E1FF48F5200692F15 /* Timer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Timer.c; sourceTree = "<group>"; };
-		E238F8901FF4DAC700692F15 /* ThreadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadManager.h; sourceTree = "<group>"; };
-		E238F8911FF4DAC700692F15 /* ThreadManager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ThreadManager.c; sourceTree = "<group>"; };
 		E238F8931FF4E40E00692F15 /* libdispatch.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libdispatch.tbd; path = usr/lib/system/introspection/libdispatch.tbd; sourceTree = SDKROOT; };
+		E24A777820030F4E004DB8DB /* libncurses.5.4.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.5.4.tbd; path = usr/lib/libncurses.5.4.tbd; sourceTree = SDKROOT; };
 		E2D679101FE7EF3500B40D76 /* SnakeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnakeModel.h; sourceTree = "<group>"; };
 		E2D679111FE7EF3500B40D76 /* SnakeModel.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SnakeModel.c; sourceTree = "<group>"; };
 		E2D679141FE80A6600B40D76 /* libncurses.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.tbd; path = usr/lib/libncurses.tbd; sourceTree = SDKROOT; };
@@ -53,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E238F88C1FF4767800692F15 /* libncurses.tbd in Frameworks */,
+				E24A777920030F4E004DB8DB /* libncurses.5.4.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +61,7 @@
 		E2D679131FE80A6600B40D76 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E24A777820030F4E004DB8DB /* libncurses.5.4.tbd */,
 				E238F8931FF4E40E00692F15 /* libdispatch.tbd */,
 				E2D679141FE80A6600B40D76 /* libncurses.tbd */,
 			);
@@ -98,20 +97,10 @@
 				E2E9C1F71FFDD275006E194F /* GameLogic.c */,
 				E2E9C1F21FFCE8DF006E194F /* Ranking.h */,
 				E2E9C1F31FFCE8DF006E194F /* Ranking.c */,
-				E2E9C1F51FFCE8E4006E194F /* Support Files */,
-			);
-			path = CleverSnake;
-			sourceTree = "<group>";
-		};
-		E2E9C1F51FFCE8E4006E194F /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
 				E238F88D1FF48F5200692F15 /* Timer.h */,
 				E238F88E1FF48F5200692F15 /* Timer.c */,
-				E238F8901FF4DAC700692F15 /* ThreadManager.h */,
-				E238F8911FF4DAC700692F15 /* ThreadManager.c */,
 			);
-			path = "Support Files";
+			path = CleverSnake;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,7 +166,6 @@
 				E2D679121FE7EF3500B40D76 /* SnakeModel.c in Sources */,
 				E2E244951FE54CC100C213FB /* main.c in Sources */,
 				E2E9C1F81FFDD275006E194F /* GameLogic.c in Sources */,
-				E238F8921FF4DAC700692F15 /* ThreadManager.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

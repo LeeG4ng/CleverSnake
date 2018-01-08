@@ -7,9 +7,8 @@
 //
 
 #include <stdbool.h>
+#include <pthread.h>
 #include "Timer.h"
-#include "ThreadManager.h"
-#include <sys/time.h>
 
 
 void set_timer(time_t interval_ms, bool * stop, timer_block do_block) {

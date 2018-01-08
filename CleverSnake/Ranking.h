@@ -13,7 +13,7 @@
 
 /*玩家*/
 struct player {
-    char name[50];
+    char name[10];
     int length;
 };
 typedef struct player Player;

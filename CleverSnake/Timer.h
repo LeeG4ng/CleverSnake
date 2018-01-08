@@ -8,12 +8,12 @@
 
 #ifndef Timer_h
 #define Timer_h
-
+#include <sys/time.h>
+#include <time.h>
 #include <stdio.h>
 
 typedef void (^timer_block)(void);
 
 void set_timer(time_t interval_ms, bool * stop, timer_block do_block);
-void destroy_timer(void);
 
 #endif /* Timer_h */
