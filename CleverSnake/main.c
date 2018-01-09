@@ -16,6 +16,7 @@
 #include "Menu.h"
 #include "GameLogic.h"
 #include "Ranking.h"
+#include "Archiver.h"
 
 
 
@@ -38,13 +39,17 @@ int main(int argc, const char * argv[]) {
 }
 
 #pragma mark - Menu Function
+void endGame(Status * end);
 void presentMenu() {
     MenuItem selected = drawMenu();
+    Status * end = NULL;
     switch (selected) {
         case MenuNewGame:
             presentLevel();
             break;
         case MenuLoadArchive:
+            end = startGameWithArchive(loadArchive());
+            endGame(end);
             break;
         case MenuRanking:
             drawRanking();
@@ -74,11 +79,20 @@ void presentLevel() {
             break;
     }
     if(end) {
+        endGame(end);
+    }
+    
+}
+
+void endGame(Status * end) {
+    if(end->alive) {//存档
+        archive(end);
+    } else {//排行榜
         clear();
         char score[20];
         sprintf(score, "Your length:%d", end->snake->length);
-        mvaddstr(5, 10, score);
-        mvaddstr(6, 10, "Enter your name:");
+        mvaddstr(5, 30, score);
+        mvaddstr(6, 30, "Enter your name:");
         Player new;
         new.length = end->snake->length;
         refresh();
@@ -95,10 +109,7 @@ void presentLevel() {
         new.name[i+1] = '\0';
         noecho();
         keypad(stdscr, true);
-//        sprintf(new.name, "ll");
         recordPlayer(new);
     }
     presentMenu();
 }
-
-

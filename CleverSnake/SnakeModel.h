@@ -10,6 +10,7 @@
 #define SnakeModel_h
 
 #include <stdio.h>
+#include <stdbool.h>
 
 #pragma mark - 类型定义
 /*坐标*/
@@ -43,6 +44,7 @@ struct Snake {
     SnakeDirection tempDirection;
     Node * head;
     int length;
+    int poisoned;
 };
 typedef struct Snake Snake;
 

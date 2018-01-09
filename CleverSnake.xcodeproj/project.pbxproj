@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E232883E2003C91700A94831 /* Archiver.c in Sources */ = {isa = PBXBuildFile; fileRef = E232883D2003C91700A94831 /* Archiver.c */; };
 		E238F88F1FF48F5200692F15 /* Timer.c in Sources */ = {isa = PBXBuildFile; fileRef = E238F88E1FF48F5200692F15 /* Timer.c */; };
 		E24A777920030F4E004DB8DB /* libncurses.5.4.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E24A777820030F4E004DB8DB /* libncurses.5.4.tbd */; };
 		E2D679121FE7EF3500B40D76 /* SnakeModel.c in Sources */ = {isa = PBXBuildFile; fileRef = E2D679111FE7EF3500B40D76 /* SnakeModel.c */; };
@@ -29,6 +30,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E232883C2003C91700A94831 /* Archiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Archiver.h; sourceTree = "<group>"; };
+		E232883D2003C91700A94831 /* Archiver.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Archiver.c; sourceTree = "<group>"; };
 		E238F88D1FF48F5200692F15 /* Timer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		E238F88E1FF48F5200692F15 /* Timer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Timer.c; sourceTree = "<group>"; };
 		E238F8931FF4E40E00692F15 /* libdispatch.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libdispatch.tbd; path = usr/lib/system/introspection/libdispatch.tbd; sourceTree = SDKROOT; };
@@ -95,6 +98,8 @@
 				E2E9C1F01FFBC667006E194F /* Menu.c */,
 				E2E9C1F61FFDD275006E194F /* GameLogic.h */,
 				E2E9C1F71FFDD275006E194F /* GameLogic.c */,
+				E232883C2003C91700A94831 /* Archiver.h */,
+				E232883D2003C91700A94831 /* Archiver.c */,
 				E2E9C1F21FFCE8DF006E194F /* Ranking.h */,
 				E2E9C1F31FFCE8DF006E194F /* Ranking.c */,
 				E238F88D1FF48F5200692F15 /* Timer.h */,
@@ -165,6 +170,7 @@
 				E2E9C1F41FFCE8DF006E194F /* Ranking.c in Sources */,
 				E2D679121FE7EF3500B40D76 /* SnakeModel.c in Sources */,
 				E2E244951FE54CC100C213FB /* main.c in Sources */,
+				E232883E2003C91700A94831 /* Archiver.c in Sources */,
 				E2E9C1F81FFDD275006E194F /* GameLogic.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

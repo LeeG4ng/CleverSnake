@@ -7,7 +7,9 @@
 //
 
 #include "SnakeModel.h"
+#include <curses.h>
 #include <stdlib.h>
+#include "GameLogic.h"
 
 #pragma mark - 私有函数
 /*操作：初始化链表的一个节点
@@ -42,7 +44,9 @@ Snake * initSnake(void) {
     Snake * psnake = (Snake *)malloc(sizeof(Snake));
     psnake->head = nodeMake(PointMake(10, 10));
     psnake->direction = SnakeDirectionRight;
+    psnake->tempDirection = SnakeDirectionRight;
     psnake->length = 1;
+    psnake->poisoned = 0;
     return psnake;
 }
 
@@ -72,20 +76,26 @@ void deleteNodeAtIndex(Snake * psnake, int index) {
 
 void moveWithFood(Snake * psnake) {
     Point headPosition = psnake->head->position;
+    Point nextPoint;
     switch (psnake->direction) {
         case SnakeDirectionUp:
-            insertNodeAtIndex(psnake, 0, PointMake(headPosition.x, headPosition.y-1));
+            nextPoint = PointMake(headPosition.x, headPosition.y-1);
             break;
         case SnakeDirectionLeft:
-            insertNodeAtIndex(psnake, 0, PointMake(headPosition.x-1, headPosition.y));
+            nextPoint = PointMake(headPosition.x-1, headPosition.y);
             break;
         case SnakeDirectionDown:
-            insertNodeAtIndex(psnake, 0, PointMake(headPosition.x, headPosition.y+1));
+            nextPoint = PointMake(headPosition.x, headPosition.y+1);
             break;
         case SnakeDirectionRight:
-            insertNodeAtIndex(psnake, 0, PointMake(headPosition.x+1, headPosition.y));
+            nextPoint = PointMake(headPosition.x+1, headPosition.y);
             break;
     }
+    nextPoint.x = (nextPoint.x + COLS) % COLS;
+    nextPoint.y = (nextPoint.y + LINES-TEXT_HEIGHT) % (LINES-TEXT_HEIGHT);
+    insertNodeAtIndex(psnake, 0, nextPoint);
+    if(psnake->poisoned)
+        psnake->poisoned--;
 }
 
 void moveWithoutFood(Snake * psnake) {
@@ -96,6 +106,7 @@ void moveWithoutFood(Snake * psnake) {
 void moveWithWeed(Snake * psnake) {
     moveWithoutFood(psnake);
     deleteNodeAtIndex(psnake, psnake->length-1);
+    psnake->poisoned += 20;
 }
 
 void moveWithBomb(Snake * psnake) {

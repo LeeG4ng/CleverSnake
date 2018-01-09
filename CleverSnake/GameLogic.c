@@ -9,12 +9,12 @@
 #include <stdbool.h>
 #include <ncurses.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <pthread.h>
 #include "GameLogic.h"
 #include "Timer.h"
 
 #pragma mark - 私有函数
-#define TEXT_HEIGHT 5
 
 /*操作：测试下一步的地图元素
  *参数：游戏状态
@@ -37,6 +37,8 @@ static MapElement testElement(Status * status) {
             nextPoint = PointMake(head.x+1, head.y);
             break;
     }
+    nextPoint.x = (nextPoint.x + COLS) % COLS;
+    nextPoint.y = (nextPoint.y + LINES-TEXT_HEIGHT) % (LINES-TEXT_HEIGHT);
     bool res = false;
     Point * points = getPositions(status->snake);
     for(int i = 1; i < status->snake->length; i++) {
@@ -120,10 +122,16 @@ static void * resetCoreTimer(void* status) {
         }
         
         //绘制
+        if(snake->poisoned) {
+            attron(A_BLINK);
+        }
         Node *tempNode = snake->head;
         for(int i = 0; i < snake->length; i++) {
             tempNode = tempNode->next;
             mvaddstr(tempNode->position.y, tempNode->position.x, "#");
+        }
+        if(snake->poisoned) {
+            attroff(A_BLINK);
         }
         static char food[5] = {0xF0, 0x9F, 0x8D, 0xA9, '\0'};
         static char weed[5] = {0xF0, 0x9F, 0x8c, 0xB1, '\0'};
@@ -147,12 +155,17 @@ static void * resetCoreTimer(void* status) {
                         break;
                     case Self:
                         break;
+                    default:
+                        initial->map[row][col] = Blank;
                 }
             }
         }
         char level[20];
+        char length[20];
         sprintf(level, "Level:%d", initial->level);
-        mvaddstr(LINES-4, 20, level);
+        sprintf(length, "Length:%d", initial->snake->length);
+        mvaddstr(LINES-4, 40, level);
+        mvaddstr(LINES-3, 40, length);
         for(int i = 0; i < COLS; i++) {
             mvaddstr(LINES-TEXT_HEIGHT, i, "-");
         }
@@ -247,6 +260,7 @@ static void * makeMapElement(void * status) {
     pthread_t food = NULL, weed = NULL, bomb = NULL;
     int origin = -1;
     while (1) {
+        usleep(100000);
         if(origin != current->level) {
             origin = current->level;
             pthread_cancel(food);
@@ -279,6 +293,7 @@ static void * makeMapElement(void * status) {
 /*操作：封装游戏主题功能，供不同的游戏开始状态复用
  *参数：游戏状态*/
 static Status * startGame(Status * initial) {
+    usleep(10000);
     initial->alive = true;
     Snake * snake = initial->snake;
     draw_thread = NULL;
@@ -325,4 +340,8 @@ Status * startGameWithLevel(GameLevel level) {
     }
     initial->map = map;
     return startGame(initial);
+}
+
+Status * startGameWithArchive(Status * archive) {
+    return startGame(archive);
 }

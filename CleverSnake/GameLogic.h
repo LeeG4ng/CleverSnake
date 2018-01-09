@@ -10,7 +10,10 @@
 #define GameLogic_h
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "SnakeModel.h"
+
+#define TEXT_HEIGHT 5
 
 #pragma mark - Map Elements
 typedef enum {
@@ -43,7 +46,7 @@ typedef struct status Status;
  *参数：游戏难度*/
 Status * startGameWithLevel(GameLevel);
 
-Status * startGameWithArchive();
+Status * startGameWithArchive(Status *);
 
 
 #endif /* GameLogic_h */
