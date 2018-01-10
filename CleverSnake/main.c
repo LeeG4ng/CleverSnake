@@ -19,9 +19,9 @@
 #include "Archiver.h"
 
 
-
 void presentMenu(void);
 void presentLevel(void);
+void endGame(Status * end);
 
 int main(int argc, const char * argv[]) {
     setlocale(LC_ALL, "en_US.utf-8");
@@ -39,7 +39,6 @@ int main(int argc, const char * argv[]) {
 }
 
 #pragma mark - Menu Function
-void endGame(Status * end);
 void presentMenu() {
     MenuItem selected = drawMenu();
     Status * end = NULL;
@@ -48,7 +47,7 @@ void presentMenu() {
             presentLevel();
             break;
         case MenuLoadArchive:
-            end = startGameWithArchive(loadArchive());
+            end = startGameWithArchive(unarchive());
             endGame(end);
             break;
         case MenuRanking:
@@ -63,9 +62,9 @@ void presentMenu() {
 }
 
 void presentLevel() {
-    LevelItem level = drawLevelSelect();
+    LevelItem levelItem = drawLevelSelect();
     Status * end = NULL;
-    switch (level) {
+    switch (levelItem) {
         case Low:
             end = startGameWithLevel(LevelLow);
             break;
@@ -81,7 +80,6 @@ void presentLevel() {
     if(end) {
         endGame(end);
     }
-    
 }
 
 void endGame(Status * end) {

@@ -12,7 +12,8 @@
 
 #pragma mark - 私有函数
 int count;
-static char * path = "/users/leeg4ng/ranking.json";
+//static char * path = "/users/leeg4ng/ranking.json";
+static char * path = "./ranking.json";
 
 /*操作：对玩家数组按降序排序
  *参数：数组*/

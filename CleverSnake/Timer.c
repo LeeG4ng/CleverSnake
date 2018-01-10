@@ -14,22 +14,12 @@
 
 void set_timer(time_t interval_ms, bool * stop, timer_block do_block) {
     while (1) {
-//        sleep((unsigned int)(interval_ms/1000));
-//        sleep(1);
-//        struct timeval start, end;
-//        gettimeofday(&start, NULL);
-//        time_t now_intetval;
         if(stop) {
             if(*stop)
                 return;
         }
         do_block();
         usleep((unsigned)interval_ms * 1000);
-//        pthread_testcancel();
-//        do {
-//            gettimeofday(&end, NULL);
-//            now_intetval = (end.tv_sec - start.tv_sec)*1000 + (end.tv_usec - start.tv_usec)/1000;
-//        } while (now_intetval < interval_ms);
     }
 }
 

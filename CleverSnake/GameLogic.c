@@ -14,8 +14,39 @@
 #include "GameLogic.h"
 #include "Timer.h"
 
-#pragma mark - 私有函数
+#pragma mark - 私有函数声明
+static MapElement testElement(Status * status);
+static bool testMap(Status * status, Point test);
+static Point randPoint(Status * current);
+static time_t getTimerInterval(GameLevel level);
+static void * makeFood(void * status);
+static void * makeWeed(void * status);
+static void * makeBomb(void * status);
+static void makeWall(void * status);
+static void * resetCoreTimer(void* status);
+static Status * startGame(Status * initial);
 
+
+#pragma mark - 接口实现
+Status * startGameWithLevel(GameLevel level) {
+    Snake * snake = initSnake();
+    Status * initial = (Status *)malloc(sizeof(Status));
+    initial->snake = snake;
+    initial->level = level;
+    initial->exist = false;
+    MapElement ** map = (MapElement **)malloc(sizeof(MapElement *) * (LINES-TEXT_HEIGHT));
+    for(int row = 0; row < LINES - TEXT_HEIGHT; row++) {
+        map[row] = (MapElement *)malloc(sizeof(MapElement) * COLS);
+    }
+    initial->map = map;
+    return startGame(initial);
+}
+
+Status * startGameWithArchive(Status * archive) {
+    return startGame(archive);
+}
+
+#pragma mark - 私有函数实现
 /*操作：测试下一步的地图元素
  *参数：游戏状态
  *使用条件：调用蛇移动函数之前*/
@@ -71,11 +102,88 @@ static bool testMap(Status * status, Point test) {
 static time_t getTimerInterval(GameLevel level) {
     switch (level) {
         case LevelLow:
-            return 400;
+            return 250;
         case LevelMedium:
-            return 300;
+            return 180;
         case LevelHigh:
-            return 200;
+            return 100;
+    }
+}
+
+static Point randPoint(Status * current) {
+    Point rpoint;
+    struct timeval timenow;
+    gettimeofday(&timenow, NULL);
+//    srand((unsigned int)time(NULL));
+    srand(timenow.tv_usec);
+    int x = rand()%(COLS-1);
+    int y = rand()%(LINES-TEXT_HEIGHT-1);
+    rpoint = PointMake(x, y);
+    while (!testMap(current, rpoint)){
+//        srand((unsigned int)time(NULL));
+        gettimeofday(&timenow, NULL);
+        srand(timenow.tv_usec);
+        int x = rand()%(COLS-1);
+        int y = rand()%(LINES-TEXT_HEIGHT-1);
+        rpoint = PointMake(x, y);
+    }
+    return rpoint;
+}
+
+static void * makeFood(void * status) {
+    Status * current = (Status *)status;
+    set_timer(8000, NULL, ^{
+        Point food = randPoint(current);
+        current->map[food.y][food.x] = Food;
+    });
+    return (void *)0;
+}
+
+
+static void * makeWeed(void * status) {
+    Status * current = (Status *)status;
+    set_timer(18000, NULL, ^{
+        if(current->exist) {
+            current->exist = false;
+            for(int row = 0; row < LINES-TEXT_HEIGHT; row++) {
+                for(int col = 0; col < COLS; col++) {
+                    if(current->map[row][col] == Weed) {
+                        current->map[row][col] = Blank;
+                    }
+                }
+            }
+        } else {
+            current->exist = true;
+            for(int i = 0; i < 40; i++) {
+                usleep(1000);
+                Point weed = randPoint(current);
+                current->map[weed.y][weed.x] = Weed;
+            }
+        }
+    });
+    return (void *)0;
+}
+
+static void * makeBomb(void * status) {
+    Status * current = (Status *)status;
+    set_timer(6000, NULL, ^{
+        Point bomb = randPoint(current);
+        current->map[bomb.y][bomb.x] = Bomb;
+    });
+    return (void *)0;
+}
+
+static void makeWall(void * status) {
+    Status * current = (Status *)status;
+    if(current->level == LevelMedium || current->level == LevelHigh) {//设置左右边界
+        for(int i = 0; i < LINES-TEXT_HEIGHT; i++) {
+            current->map[i][0] = current->map[i][COLS-1] = Wall;
+        }
+    }
+    if(current->level == LevelHigh) {//设置上下边界
+        for(int i = 0; i < COLS; i++) {
+            current->map[0][i] = current->map[LINES-1-TEXT_HEIGHT][i] = Wall;
+        }
     }
 }
 
@@ -176,82 +284,6 @@ static void * resetCoreTimer(void* status) {
     return (void *)0;
 }
 
-static Point randPoint(Status * current) {
-    Point rpoint;
-    struct timeval timenow;
-    gettimeofday(&timenow, NULL);
-//    srand((unsigned int)time(NULL));
-    srand(timenow.tv_usec);
-    int x = rand()%(COLS-1);
-    int y = rand()%(LINES-TEXT_HEIGHT-1);
-    rpoint = PointMake(x, y);
-    while (!testMap(current, rpoint)){
-//        srand((unsigned int)time(NULL));
-        srand(timenow.tv_usec);
-        int x = rand()%(COLS-1);
-        int y = rand()%(LINES-TEXT_HEIGHT-1);
-        rpoint = PointMake(x, y);
-    }
-    return rpoint;
-}
-
-static void * makeFood(void * status) {
-    Status * current = (Status *)status;
-    set_timer(8000, NULL, ^{
-        Point food = randPoint(current);
-        current->map[food.y][food.x] = Food;
-    });
-    return (void *)0;
-}
-
-static void * makeWeed(void * status) {
-    Status * current = (Status *)status;
-    __block int count = 0;
-    set_timer(12000, NULL, ^{
-        if(count++ == 5) {
-            count = 0;
-            for(int row = 0; row < LINES-TEXT_HEIGHT; row++) {
-                for(int col = 0; col < COLS; col++) {
-                    if(current->map[row][col] == Weed) {
-                        current->map[row][col] = Blank;
-                    }
-                }
-            }
-        } else {
-            Point weed = randPoint(current);
-            current->map[weed.y][weed.x] = Weed;
-        }
-    });
-    return (void *)0;
-}
-
-static void * makeBomb(void * status) {
-    Status * current = (Status *)status;
-    set_timer(15000, NULL, ^{
-        Point bomb = randPoint(current);
-        current->map[bomb.y][bomb.x] = Bomb;
-    });
-    return (void *)0;
-}
-
-static void makeWall(void * status) {
-    Status * current = (Status *)status;
-    if(current->level == LevelMedium || current->level == LevelHigh) {//设置左右边界
-        for(int i = 0; i < LINES-TEXT_HEIGHT; i++) {
-            current->map[i][0] = current->map[i][COLS-1] = Wall;
-        }
-    }
-    if(current->level == LevelHigh) {//设置上下边界
-        for(int i = 0; i < COLS; i++) {
-            current->map[0][i] = current->map[LINES-1-TEXT_HEIGHT][i] = Wall;
-        }
-    }
-}
-
-static void gameEnd(Status * end) {
-    
-}
-
 /*操作：制作地图元素，由多线程调用
  *参数：游戏状态*/
 pthread_t draw_thread, map_thread;
@@ -328,20 +360,3 @@ static Status * startGame(Status * initial) {
 
 
 
-#pragma mark - 接口实现
-Status * startGameWithLevel(GameLevel level) {
-    Snake * snake = initSnake();
-    Status * initial = (Status *)malloc(sizeof(Status));
-    initial->snake = snake;
-    initial->level = level;
-    MapElement ** map = (MapElement **)malloc(sizeof(MapElement *) * (LINES-TEXT_HEIGHT));
-    for(int row = 0; row < LINES - TEXT_HEIGHT; row++) {
-        map[row] = (MapElement *)malloc(sizeof(MapElement) * COLS);
-    }
-    initial->map = map;
-    return startGame(initial);
-}
-
-Status * startGameWithArchive(Status * archive) {
-    return startGame(archive);
-}

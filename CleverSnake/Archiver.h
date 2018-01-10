@@ -10,6 +10,7 @@
 #define Archiver_h
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "GameLogic.h"
 #include "SnakeModel.h"
 
@@ -17,11 +18,12 @@ typedef struct {
     Point snake[500];
     int length;
     int poisoned;
+    bool weedExist;
     SnakeDirection dir;
     GameLevel level;
     MapElement map[24][80];
 } Archive;
 
 void archive(Status *);
-Status * loadArchive(void);
+Status * unarchive(void);
 #endif /* Archiver_h */

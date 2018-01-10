@@ -9,7 +9,8 @@
 #include "Archiver.h"
 #include <stdlib.h>
 
-static char * path = "/users/leeg4ng/archives.json";
+//static char * path = "/users/leeg4ng/archives.json";
+static char * path = "./archives.json";
 
 void archive(Status * end) {
     FILE * file = fopen(path, "wb");
@@ -20,14 +21,16 @@ void archive(Status * end) {
     new.dir = end->snake->direction;
     new.level = end->level;
     new.poisoned = end->snake->poisoned;
+    new.weedExist = end->exist;
     
     for(int row = 0; row < 24-TEXT_HEIGHT; row++) {
         for(int col = 0; col < 80; col++) {
-            if(end->map[row][col] >= 0 && end->map[row][col] < 5) {
-                new.map[row][col] = end->map[row][col];
-            } else {
-                new.map[row][col] = 0;
-            }
+//            if(end->map[row][col] >= 0 && end->map[row][col] < 5) {
+//                new.map[row][col] = end->map[row][col];
+//            } else {
+//                new.map[row][col] = 0;
+//            }
+            new.map[row][col] = end->map[row][col];
         }
     }
     Node * temp = snake->head;
@@ -40,7 +43,7 @@ void archive(Status * end) {
     fclose(file);
 }
 
-Status * loadArchive(void) {
+Status * unarchive(void) {
     FILE * file = fopen(path, "rb+");
     Archive old;
     fread(&old, sizeof(Archive), 1, file);
@@ -50,6 +53,7 @@ Status * loadArchive(void) {
     initial->alive = true;
     initial->level = old.level;
     initial->snake = snake;
+    initial->exist = old.weedExist;
     snake->direction = old.dir;
     snake->tempDirection = old.dir;
     snake->poisoned = old.poisoned;

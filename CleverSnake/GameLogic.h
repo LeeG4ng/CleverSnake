@@ -39,6 +39,7 @@ struct status {
     GameLevel level;
     MapElement ** map;//以二维数组表示的地图
     bool alive;
+    bool exist;
 };
 typedef struct status Status;
 

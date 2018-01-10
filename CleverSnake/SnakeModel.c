@@ -106,7 +106,7 @@ void moveWithoutFood(Snake * psnake) {
 void moveWithWeed(Snake * psnake) {
     moveWithoutFood(psnake);
     deleteNodeAtIndex(psnake, psnake->length-1);
-    psnake->poisoned += 20;
+    psnake->poisoned += 50;
 }
 
 void moveWithBomb(Snake * psnake) {
