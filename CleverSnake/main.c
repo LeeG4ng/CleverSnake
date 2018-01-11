@@ -17,13 +17,15 @@
 #include "GameLogic.h"
 #include "Ranking.h"
 #include "Archiver.h"
-
+#include <unistd.h>
+#include <libgen.h>
 
 void presentMenu(void);
 void presentLevel(void);
 void endGame(Status * end);
 
 int main(int argc, const char * argv[]) {
+    chdir(dirname(argv[0]));
     setlocale(LC_ALL, "en_US.utf-8");
     initscr();
     raw();
@@ -104,7 +106,7 @@ void endGame(Status * end) {
                 break;
             new.name[i] = ch;
         }
-        new.name[i+1] = '\0';
+        new.name[i] = '\0';
         noecho();
         keypad(stdscr, true);
         recordPlayer(new);

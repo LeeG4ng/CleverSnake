@@ -12,7 +12,6 @@
 
 #pragma mark - 私有函数
 int count;
-//static char * path = "/users/leeg4ng/ranking.json";
 static char * path = "./ranking.json";
 
 /*操作：对玩家数组按降序排序
@@ -36,7 +35,7 @@ static void sortRanking(Player * array) {
 /*操作：从硬盘读取排行榜，并调用方法排序
  *返回：排序好的玩家数组*/
 static Player * getRanking(void) {
-    FILE * file = fopen(path, "r");
+    FILE * file = fopen(path, "a+");
     char temp[100];
     rewind(file);
     count = 0;

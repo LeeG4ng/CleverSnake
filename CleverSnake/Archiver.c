@@ -9,7 +9,6 @@
 #include "Archiver.h"
 #include <stdlib.h>
 
-//static char * path = "/users/leeg4ng/archives.json";
 static char * path = "./archives.json";
 
 void archive(Status * end) {
